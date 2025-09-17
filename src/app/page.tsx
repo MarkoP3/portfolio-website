@@ -27,7 +27,7 @@ export default function Home() {
           <Reveal>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
             <div className="text-sm opacity-60">2013 - 2017</div>
-            <h3 className="mt-1 font-semibold">Technical High School "Ivan Sarić" Subotica, Serbia</h3>
+            <h3 className="mt-1 font-semibold">Technical High School &quot;Ivan Sarić&quot; Subotica, Serbia</h3>
             <p className="opacity-80">Field of study - Information Systems</p>
             <p className="opacity-80">Degree - Technician of Information Technologies</p>
           </div>
@@ -58,7 +58,7 @@ export default function Home() {
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
             <div className="text-sm opacity-60">2021 - 2025</div>
             <h3 className="mt-1 font-semibold">VegaIT — Software Engineer (Novi Sad, Serbia)</h3>
-            <p className="opacity-80 mt-2">Client projects: Worked for an international luxury men's suits brand as a .NET Developer on the CRM team. Built a centralized email service that is fully event-driven and consists of a series of Azure Functions and Logic Apps.</p>
+            <p className="opacity-80 mt-2">Client projects: Worked for an international luxury men&#39;s suits brand as a .NET Developer on the CRM team. Built a centralized email service that is fully event-driven and consists of a series of Azure Functions and Logic Apps.</p>
             <p className="opacity-80 mt-2">Integrated with Salesforce (Service Cloud, Commerce Cloud, Marketing Cloud), booking services (Jrni, Waitwhile), and owned customer management processes.</p>
             <p className="opacity-80 mt-2">Managed Azure infrastructure and CI/CD with Azure DevOps, building pipelines and ARM/Bicep templates for resource management.</p>
             <div className="mt-4">
