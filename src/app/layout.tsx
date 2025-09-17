@@ -16,12 +16,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Marko Puzović | Software Engineer",
   description:
-    "Software engineer passionate about .NET and Azure. Based in Novi Sad, Serbia.",
+    "Software engineer passionate about .NET and Azure.",
   metadataBase: new URL("https://markopuzovic.site"),
   openGraph: {
     title: "Marko Puzović | Software Engineer",
     description:
-      "Software engineer passionate about .NET and Azure. Based in Novi Sad, Serbia.",
+      "Software engineer passionate about .NET and Azure.",
     url: "https://markopuzovic.site",
     siteName: "Marko Puzović",
     locale: "en_US",
