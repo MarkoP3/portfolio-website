@@ -1,43 +1,92 @@
 import Reveal from "@/components/Reveal";
+import { createTranslator, getRawSiteContent, type LanguageCode, type SiteContent } from "@/lib/content";
+import { Metadata } from "next";
 
-export default function Home() {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}): Promise<Metadata> {
+  const lang = (await searchParams)?.lang ?? "en";
+  const t = createTranslator(lang as LanguageCode);
+  const content: SiteContent = await getRawSiteContent();
+  return {
+    title: t(content.metadata.title),
+    description: t(content.metadata.description),
+    metadataBase: new URL(t(content.metadata.openGraph.url)),
+    openGraph: {
+      title: t(content.metadata.openGraph.title),
+      description: t(content.metadata.openGraph.description),
+      url: t(content.metadata.openGraph.url),
+      siteName: t(content.metadata.openGraph.siteName),
+      locale: t(content.metadata.openGraph.locale),
+    },
+    alternates: {
+      canonical: "/",
+    },
+  };
+}
+
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const lang = (await searchParams)?.lang ?? "en";
+  const content: SiteContent = await getRawSiteContent();
+  const t = createTranslator(lang as LanguageCode);
   return (
+    <><header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-background/60 bg-background/80 border-b border-white/10">
+    <nav className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
+      <a href="#profile" className="font-semibold tracking-tight accent">Marko</a>
+      <div className="hidden sm:flex gap-6 text-sm">
+      <a href="#education" className="opacity-80 hover:opacity-100 transition-colors hover:text-[var(--accent)]">{t(content.sections.education)}</a>
+      <a href="#experience" className="opacity-80 hover:opacity-100 transition-colors hover:text-[var(--accent)]">{t(content.sections.experience)}</a>
+      <a href="#projects" className="opacity-80 hover:opacity-100 transition-colors hover:text-[var(--accent)]">{t(content.sections.projects)}</a>
+      <a href="#certificates" className="opacity-80 hover:opacity-100 transition-colors hover:text-[var(--accent)]">{t(content.sections.certificates)}</a>
+      <a href="#achievements" className="opacity-80 hover:opacity-100 transition-colors hover:text-[var(--accent)]">{t(content.sections.achievements)}</a>
+      <a href="#skills" className="opacity-80 hover:opacity-100 transition-colors hover:text-[var(--accent)]">{t(content.sections.skillsAndLanguages)}</a>
+      <a href="#contact" className="opacity-80 hover:opacity-100 transition-colors hover:text-[var(--accent)]">{t(content.sections.contact)}</a>
+      </div>
+    </nav>
+  </header>
     <main className="mx-auto max-w-5xl px-6 py-12 space-y-24">
       {/* Profile / Hero */}
       <section id="profile" className="pt-6 relative">
         <div className="hero-ring" />
-        <div className="text-sm uppercase tracking-[0.35em] muted">Hi, I am</div>
+        <div className="text-sm uppercase tracking-[0.35em] muted">{t(content.profile.greeting)}</div>
         <h1 className="mt-2 text-5xl sm:text-6xl font-bold tracking-tight">
-          Marko <span className="accent">Puzović</span>
+          {t(content.profile.firstName)} <span className="accent">{t(content.profile.lastName)}</span>
         </h1>
-        <p className="mt-3 text-lg sm:text-xl opacity-90">SOFTWARE ENGINEER</p>
+        <p className="mt-3 text-lg sm:text-xl opacity-90">{t(content.profile.role)}</p>
         <p className="mt-6 max-w-2xl leading-7 opacity-90">
-          Software engineer focused on .NET and Azure. I design and deliver reliable, cloud‑native services and actively share knowledge through talks, mentorship, and teaching. Outside of work, I enjoy traveling and exploring diverse cultures.
+          {t(content.profile.description)}
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <a href="#contact" className="inline-flex items-center rounded-full px-5 py-2 text-sm font-medium bg-[var(--accent)] text-[var(--background)] hover:opacity-90 transition">Contact me</a>
-          <a href="#projects" className="inline-flex items-center rounded-full px-5 py-2 text-sm font-medium border border-white/15 hover:bg-white/5 transition">View projects</a>
+          <a href="#contact" className="inline-flex items-center rounded-full px-5 py-2 text-sm font-medium bg-[var(--accent)] text-[var(--background)] hover:opacity-90 transition">{t(content.profile.ctaContact)}</a>
+          <a href="#projects" className="inline-flex items-center rounded-full px-5 py-2 text-sm font-medium border border-white/15 hover:bg-white/5 transition">{t(content.profile.ctaProjects)}</a>
         </div>
       </section>
 
       {/* Education */}
       <section id="education">
-        <h2 className="section-title text-2xl font-semibold tracking-tight">Education</h2>
+        <h2 className="section-title text-2xl font-semibold tracking-tight">{t(content.sections.education)}</h2>
         <div className="mt-8 grid sm:grid-cols-2 gap-6">
           <Reveal>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <div className="text-sm opacity-60">2013 - 2017</div>
-            <h3 className="mt-1 font-semibold">Technical High School &quot;Ivan Sarić&quot; Subotica, Serbia</h3>
-            <p className="opacity-80">Field of study - Information Systems</p>
-            <p className="opacity-80">Degree - Technician of Information Technologies</p>
+            <div className="text-sm opacity-60">{t(content.education[0].years)}</div>
+            <h3 className="mt-1 font-semibold">{t(content.education[0].school)}</h3>
+            <p className="opacity-80">{t(content.education[0].field)}</p>
+            <p className="opacity-80">{t(content.education[0].degree)}</p>
           </div>
           </Reveal>
           <Reveal delayMs={120}>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <div className="text-sm opacity-60">2017 - 2021</div>
-            <h3 className="mt-1 font-semibold">Faculty of Technical Sciences, University of Novi Sad, Serbia</h3>
-            <p className="opacity-80">Field of study - Engineering of Information Systems</p>
-            <p className="opacity-80">Degree - Bachelor of Engineering in Information Technology</p>
+            <div className="text-sm opacity-60">{t(content.education[1].years)}</div>
+            <h3 className="mt-1 font-semibold">{t(content.education[1].school)}</h3>
+            <p className="opacity-80">{t(content.education[1].field)}</p>
+            <p className="opacity-80">{t(content.education[1].degree)}</p>
           </div>
           </Reveal>
         </div>
@@ -45,28 +94,32 @@ export default function Home() {
 
       {/* Experience */}
       <section id="experience">
-        <h2 className="section-title text-2xl font-semibold tracking-tight">Experience</h2>
+        <h2 className="section-title text-2xl font-semibold tracking-tight">{t(content.sections.experience)}</h2>
         <div className="mt-8 space-y-6">
           <Reveal>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <div className="text-sm opacity-60">2025 — Present</div>
-            <h3 className="mt-1 font-semibold">Suitsupply — .NET Software Engineer (Amsterdam,Netherlands)</h3>
-            <p className="opacity-80 mt-2">Suitsupply is an international menswear brand headquartered in the Netherlands. I contribute to the CRM domain, delivering event‑driven services on Azure with .NET, Azure Functions, and Logic Apps, and collaborating across teams to ensure reliable customer journeys.</p>
+            <div className="text-sm opacity-60">{t(content.experience[0].years)}</div>
+            <h3 className="mt-1 font-semibold">{t(content.experience[0].companyAndRole)}</h3>
+            {content.experience[0].descriptions.map((d, idx: number) => (
+              <p key={idx} className="opacity-80 mt-2">{t(d)}</p>
+            ))}
           </div>
           </Reveal>
           <Reveal>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <div className="text-sm opacity-60">2021 - 2025</div>
-            <h3 className="mt-1 font-semibold">VegaIT — Software Engineer (Novi Sad, Serbia)</h3>
-            <p className="opacity-80 mt-2">Client projects: Worked for an international luxury men&#39;s suits brand as a .NET Developer on the CRM team. Built a centralized email service that is fully event-driven and consists of a series of Azure Functions and Logic Apps.</p>
-            <p className="opacity-80 mt-2">Integrated with Salesforce (Service Cloud, Commerce Cloud, Marketing Cloud), booking services (Jrni, Waitwhile), and owned customer management processes.</p>
-            <p className="opacity-80 mt-2">Managed Azure infrastructure and CI/CD with Azure DevOps, building pipelines and ARM/Bicep templates for resource management.</p>
+            <div className="text-sm opacity-60">{t(content.experience[1].years)}</div>
+            <h3 className="mt-1 font-semibold">{t(content.experience[1].companyAndRole)}</h3>
+            {content.experience[1].descriptions.map((d, idx: number) => (
+              <p key={idx} className="opacity-80 mt-2">{t(d)}</p>
+            ))}
             <div className="mt-4">
-              <h4 className="font-semibold">Internal efforts</h4>
+              {content.experience[1].internalEffortsTitle && (
+                <h4 className="font-semibold">{t(content.experience[1].internalEffortsTitle)}</h4>
+              )}
               <ul className="list-disc list-inside opacity-80 space-y-1 mt-2">
-                <li>Spoke at an internal conference about Minimal APIs: performance and real use cases.</li>
-                <li>Mentorship and led multiple internal projects.</li>
-                <li>Lectured first-year Software Engineering students at the Faculty of Technical Sciences on OOP basics and SOLID principles.</li>
+                {content.experience[1].bullets?.map((b, idx: number) => (
+                  <li key={idx}>{t(b)}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -76,35 +129,26 @@ export default function Home() {
 
       {/* Projects */}
       <section id="projects">
-        <h2 className="section-title text-2xl font-semibold tracking-tight">Personal projects</h2>
+        <h2 className="section-title text-2xl font-semibold tracking-tight">{t(content.sections.projects)}</h2>
         <p className="mt-3 opacity-80">
-          Explore more on
-          {" "}
+          {t(content.sections.projectsExplorePrefix)}{" "}
           <a
-            href="https://github.com/MarkoP3?tab=repositories"
+            href={t(content.social.githubUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-[var(--accent)]"
           >
-            GitHub
+            {t(content.sections.projectsExploreLinkText)}
           </a>
           .
         </p>
         <div className="mt-8 grid sm:grid-cols-2 gap-6">
-          {[
-            { name: "Drago Chase", desc: "Duck and jump android game inspired by an old programming teacher.", tech: "Javascript, HTML, CSS, Phaser, Cordova" },
-            { name: "Insurance offer", desc: "Android app that generates insurance policy offers.", tech: "Javascript, HTML, CSS, Cordova" },
-            { name: "Pizzeria Peperoni", desc: "Pizza ordering site for the local pizzeria.", tech: ".Net, React.js, SQL Server" },
-            { name: "Progres Invest", desc: "Real estate catalog for local investment company.", tech: "Next.js, Contentful" },
-            { name: "Resurs nekretnine", desc: "Real estate agancy website.", tech: "Next.js, Contentful, Mysql" },
-            { name: "Fitness Leaderboard", desc: "Leaderboard for a local fitness competition.", tech: "React.js, Node.js, Socket.io" },
-            { name: "Battleships", desc: "Multiplayer battleships game.", tech: "Node.js, Socket.io" },
-          ].map((p) => (
-            <Reveal key={p.name}>
+          {content.projects.map((p) => (
+            <Reveal key={t(p.name)}>
               <article className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors group">
-                <h3 className="font-semibold group-hover:text-[var(--accent)] transition-colors">{p.name}</h3>
-                <p className="mt-1 opacity-80">{p.desc}</p>
-                <p className="mt-2 text-sm opacity-60">{p.tech}</p>
+                <h3 className="font-semibold group-hover:text-[var(--accent)] transition-colors">{t(p.name)}</h3>
+                <p className="mt-1 opacity-80">{t(p.desc)}</p>
+                <p className="mt-2 text-sm opacity-60">{t(p.tech)}</p>
               </article>
             </Reveal>
           ))}
@@ -113,18 +157,18 @@ export default function Home() {
 
       {/* Certificates */}
       <section id="certificates">
-        <h2 className="section-title text-2xl font-semibold tracking-tight">Certificates</h2>
+        <h2 className="section-title text-2xl font-semibold tracking-tight">{t(content.sections.certificates)}</h2>
         <div className="mt-8 grid sm:grid-cols-2 gap-6">
           <Reveal>
-          <a href="https://learn.nvidia.com/certificates?id=946ef9f0acf74d518c2c850c96ee38ea" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors block">
-            <h3 className="font-semibold">NVIDIA Certificate 1</h3>
-            <p className="mt-1 opacity-80">Fundamentals of Deep Learning</p>
+          <a href={t(content.certificates[0].url)} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors block">
+            <h3 className="font-semibold">{t(content.certificates[0].title)}</h3>
+            <p className="mt-1 opacity-80">{t(content.certificates[0].subtitle)}</p>
           </a>
           </Reveal>
           <Reveal delayMs={120}>
-          <a href="https://learn.nvidia.com/certificates?id=fd528e576741437a8d7e3fc8de56dcdf" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors block">
-            <h3 className="font-semibold">NVIDIA Certificate 2</h3>
-            <p className="mt-1 opacity-80">Fundamentals of Deep Learning for Computer Vision</p>
+          <a href={t(content.certificates[1].url)} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors block">
+            <h3 className="font-semibold">{t(content.certificates[1].title)}</h3>
+            <p className="mt-1 opacity-80">{t(content.certificates[1].subtitle)}</p>
           </a>
           </Reveal>
         </div>
@@ -132,12 +176,12 @@ export default function Home() {
 
       {/* Achievements */}
       <section id="achievements">
-        <h2 className="section-title text-2xl font-semibold tracking-tight">Achievements</h2>
+        <h2 className="section-title text-2xl font-semibold tracking-tight">{t(content.sections.achievements)}</h2>
         <div className="mt-8 space-y-6">
           <Reveal>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <h3 className="font-semibold">2nd place Devogame 2019</h3>
-            <p className="opacity-80 mt-1">Tech competition held by Devoteam. Alongside two colleagues, created a flood prevention system that won second place in the finals in Paris.</p>
+            <h3 className="font-semibold">{t(content.achievements[0].title)}</h3>
+            <p className="opacity-80 mt-1">{t(content.achievements[0].description)}</p>
           </div>
           </Reveal>
         </div>
@@ -145,21 +189,22 @@ export default function Home() {
 
       {/* Skills & Languages */}
       <section id="skills">
-        <h2 className="section-title text-2xl font-semibold tracking-tight">Skills & Languages</h2>
+        <h2 className="section-title text-2xl font-semibold tracking-tight">{t(content.sections.skillsAndLanguages)}</h2>
         <div className="mt-8 grid sm:grid-cols-2 gap-6">
           <Reveal>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <h3 className="font-semibold">Languages</h3>
+            <h3 className="font-semibold">{t(content.sections.languages)}</h3>
             <ul className="mt-2 space-y-1 opacity-80">
-              <li>Serbian — Native</li>
-              <li>English — Speaking, Writing</li>
+              {content.skills.languages.map((l, idx: number) => (
+                <li key={idx}>{t(l)}</li>
+              ))}
             </ul>
           </div>
           </Reveal>
           <Reveal delayMs={120}>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <h3 className="font-semibold">Technologies</h3>
-            <p className="mt-2 opacity-80">NodeJS, C#, Java, MSSQL, React, CosmosDB, Azure DevOps, .NET, Azure</p>
+            <h3 className="font-semibold">{t(content.sections.technologies)}</h3>
+            <p className="mt-2 opacity-80">{t(content.skills.technologies)}</p>
           </div>
           </Reveal>
         </div>
@@ -167,20 +212,21 @@ export default function Home() {
 
       {/* Contact */}
       <section id="contact">
-        <h2 className="section-title text-2xl font-semibold tracking-tight">Contact</h2>
+        <h2 className="section-title text-2xl font-semibold tracking-tight">{t(content.sections.contact)}</h2>
         <div className="mt-8 grid sm:grid-cols-1 gap-6">
           <Reveal>
           <div className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors">
-            <h3 className="font-semibold">Get in touch</h3>
+            <h3 className="font-semibold">{t(content.sections.getInTouch)}</h3>
             <ul className="mt-2 space-y-2">
-              <li><a className="hover:underline hover:text-[var(--accent)] transition-colors" href="tel:+38163388371">+381 63 388 371</a></li>
-              <li><a className="hover:underline hover:text-[var(--accent)] transition-colors" href="mailto:markopuzovic98@gmail.com">markopuzovic98@gmail.com</a></li>
-              <li><a className="hover:underline hover:text-[var(--accent)] transition-colors" target="_blank" rel="noopener noreferrer" href="https://markopuzovic.site">markopuzovic.site</a></li>
+              <li><a className="hover:underline hover:text-[var(--accent)] transition-colors" href={`tel:${t(content.contact.phone)}`}>{t(content.contact.phone)}</a></li>
+              <li><a className="hover:underline hover:text-[var(--accent)] transition-colors" href={`mailto:${t(content.contact.email)}`}>{t(content.contact.email)}</a></li>
+              <li><a className="hover:underline hover:text-[var(--accent)] transition-colors" target="_blank" rel="noopener noreferrer" href={t(content.contact.website)}>{t(content.contact.website)}</a></li>
             </ul>
           </div>
           </Reveal>
         </div>
       </section>
       </main>
+    </>
   );
 }
