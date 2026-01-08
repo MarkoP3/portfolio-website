@@ -1,6 +1,7 @@
 import Reveal from "@/components/Reveal";
 import { createTranslator, getRawSiteContent, type LanguageCode, type SiteContent } from "@/lib/content";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export async function generateMetadata({
   searchParams,
@@ -142,13 +143,53 @@ export default async function Home({
           </a>
           .
         </p>
-        <div className="mt-8 grid sm:grid-cols-2 gap-6">
+        <div className="mt-8 grid sm:grid-cols-2 auto-rows-fr gap-6">
           {content.projects.map((p) => (
             <Reveal key={t(p.name)}>
-              <article className="rounded-xl border border-white/10 p-5 hover:border-[var(--accent)]/40 transition-colors group">
+              <article className="rounded-xl border border-white/10 p-4 hover:border-[var(--accent)]/40 transition-colors group h-full flex flex-col">
+                <div className="relative w-full overflow-hidden rounded-lg border border-white/10 h-40 bg-white/5 mb-3">
+                  {p.image ? (
+                    <Image
+                      src={p.image}
+                      alt={`${t(p.name)} preview`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
+                      priority={false}
+                    />
+                  ) : (
+                    <div className="w-full h-full grid place-items-center text-xs uppercase tracking-wide opacity-50">
+                      Preview Unavailable
+                    </div>
+                  )}
+                </div>
                 <h3 className="font-semibold group-hover:text-[var(--accent)] transition-colors">{t(p.name)}</h3>
                 <p className="mt-1 opacity-80">{t(p.desc)}</p>
-                <p className="mt-2 text-sm opacity-60">{t(p.tech)}</p>
+                <div className="mt-auto">
+                  <p className="text-sm opacity-60">{t(p.tech)}</p>
+                  {p.url && (
+                    <div className="pt-2">
+                      {p.url.toLowerCase().endsWith(".apk") ? (
+                        <a
+                          href={p.url}
+                          download
+                          className="inline-flex items-center rounded-full px-5 py-2 text-sm font-medium bg-[var(--accent)] text-[var(--background)] hover:opacity-90 transition"
+                        >
+                          {t(p.cta ?? "Download")}
+                        </a>
+                      ) : (
+                        <a
+                          href={p.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center rounded-full px-5 py-2 text-sm font-medium border border-white/15 hover:bg-white/5 transition"
+                        >
+                          {t(p.cta ?? "Visit website")}
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
               </article>
             </Reveal>
           ))}

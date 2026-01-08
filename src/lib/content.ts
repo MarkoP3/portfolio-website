@@ -66,6 +66,9 @@ export interface SiteContent {
       name: LocalizedString;
       desc: LocalizedString;
       tech: LocalizedString;
+      image?: string;
+      url?: string;
+      cta?: LocalizedString;
     }
   >;
   certificates: Array<{
