@@ -84,7 +84,6 @@ const content = {
   ],
   projects: [
     { name: { en: "Drago Chase"}, desc: { en: "Duck and jump android game inspired by an old programming teacher."}, tech: { en: "Javascript, HTML, CSS, Phaser, Cordova"}, url: "/androidapps/DragoChase.apk", image: "/images/DragoChaseCover.png", cta: { en: "Download" } },
-    { name: { en: "Insurance offer"}, desc: { en: "Android app that generates insurance policy offers."}, tech: { en: "Javascript, HTML, CSS, Cordova"}, url: "/androidapps/insurancePolicyOffers.apk", cta: { en: "Download" } },
     { name: { en: "Progres Invest"}, desc: { en: "Real estate catalog for local investment company."}, tech: { en: "Next.js, Contentful"}, url: "https://www.progresinvest.rs/", image: "/images/ProgresInvestCover.png", cta: { en: "Visit website" } },
     { name: { en: "Resurs nekretnine"}, desc: { en: "Real estate agancy website."}, tech: { en: "Next.js, Contentful, Mysql"}, url: "https://resurs-nekretnine.rs/", image: "/images/ResursNekretnineCover.png", cta: { en: "Visit website" } },
     { name: { en: "Fitness Leaderboard"}, desc: { en: "Leaderboard for a local fitness competition."}, tech: { en: "React.js, Node.js, Socket.io"}, url: "https://kind-wave-03b507903.4.azurestaticapps.net/", image: "/images/FitnessCompetitionCover.png", cta: { en: "Visit website" } },
